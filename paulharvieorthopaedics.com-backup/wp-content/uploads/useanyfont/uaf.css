@@ -1,0 +1,16 @@
+				@font-face {
+					font-family: 'rns-regular';
+					src: url('/wp-content/uploads/useanyfont/200513104528Rns-Regular.woff2') format('woff2'),
+						url('/wp-content/uploads/useanyfont/200513104528Rns-Regular.woff') format('woff');
+					  font-display: auto;
+				}
+
+				.rns-regular{font-family: 'rns-regular' !important;}
+
+						body{
+					font-family: 'rns-regular' !important;
+				}
+						body, h1, h2, h3, h4, h5, h6, p, blockquote, li, a, #menu-dep li a, #menu-dep li span, #menu-main li a, #menu-main li span, #menu-quick-links li a, #menu-quick-links li span{
+					font-family: 'rns-regular' !important;
+				}
+		
