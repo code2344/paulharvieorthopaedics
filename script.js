@@ -1,5 +1,46 @@
 // Contact Form Handler
 document.addEventListener('DOMContentLoaded', function() {
+    const syncTreatmentHeights = () => {
+        const treatmentCards = document.querySelectorAll('.treatment-card');
+        const shouldStack = window.matchMedia('(max-width: 1024px)').matches;
+
+        treatmentCards.forEach(card => {
+            const imageWrap = card.querySelector('.treatment-image');
+            const content = card.querySelector('.treatment-content');
+
+            if (!imageWrap || !content) {
+                return;
+            }
+
+            imageWrap.style.height = 'auto';
+
+            if (!shouldStack) {
+                const contentHeight = content.scrollHeight;
+                imageWrap.style.height = `${contentHeight}px`;
+            }
+        });
+    };
+
+    const bindTreatmentObservers = () => {
+        const treatmentCards = document.querySelectorAll('.treatment-card');
+
+        treatmentCards.forEach(card => {
+            const image = card.querySelector('.treatment-image img');
+            const content = card.querySelector('.treatment-content');
+
+            if (image && !image.complete) {
+                image.addEventListener('load', syncTreatmentHeights);
+            }
+
+            if (content && 'ResizeObserver' in window) {
+                const observer = new ResizeObserver(() => {
+                    syncTreatmentHeights();
+                });
+                observer.observe(content);
+            }
+        });
+    };
+
     const contactForm = document.querySelector('.contact-form');
     
     if (contactForm) {
@@ -93,12 +134,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    syncTreatmentHeights();
+    bindTreatmentObservers();
+    window.addEventListener('resize', syncTreatmentHeights);
+    window.addEventListener('load', syncTreatmentHeights);
 });
 
 // Microsoft Clarity Analytics
 (function(c,l,a,r,i,t,y){
     c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/p/XXXXXXXXXX";
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
     y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-})(window, document, "clarity", "script", "clarity");
+})(window, document, "clarity", "script", "vmm85mx10f");
 
