@@ -873,14 +873,36 @@ body {
     }
 
     .nav-container {
-        flex-direction: column;
-        gap: 20px;
+        position: relative;
+    }
+
+    .nav-toggle {
+        display: block;
     }
 
     .nav-menu {
+        display: none;
         flex-direction: column;
         gap: 10px;
-        align-items: center;
+        align-items: flex-start;
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        background: var(--primary-color);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 6px;
+        padding: 14px;
+        min-width: 220px;
+        z-index: 120;
+    }
+
+    .nav-menu.nav-open {
+        display: flex;
+    }
+
+    .nav-menu a {
+        display: block;
+        width: 100%;
     }
 
     .contact-grid {

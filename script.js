@@ -1,5 +1,15 @@
 // Contact Form Handler
 document.addEventListener('DOMContentLoaded', function() {
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+
+    if (navToggle && navMenu) {
+        navToggle.addEventListener('click', function() {
+            const isOpen = navMenu.classList.toggle('nav-open');
+            navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+    }
+
     const syncTreatmentHeights = () => {
         const treatmentCards = document.querySelectorAll('.treatment-card');
         const shouldStack = window.matchMedia('(max-width: 1024px)').matches;
@@ -52,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
             aboutImage.style.height = 'auto';
             if (!shouldStack) {
                 const contentHeight = aboutContent.scrollHeight;
-                aboutImage.style.height = `${contentHeight1}px`;
+                aboutImage.style.height = `${contentHeight}px`;
             }
         }
 
@@ -63,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (appointmentImage && appointmentContent) {
             appointmentImage.style.height = 'auto';
             if (!shouldStack) {
-                const contentHeight = appointmentContent.scrollHeight;
+                const contentHeight = appointmentContent.getBoundingClientRect().height;
                 appointmentImage.style.height = `${contentHeight}px`;
             }
         }
@@ -166,6 +176,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
+
+                if (navMenu && navToggle && window.matchMedia('(max-width: 768px)').matches) {
+                    navMenu.classList.remove('nav-open');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                }
             }
         });
     });
@@ -222,6 +237,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 1500);
     
     window.addEventListener('resize', () => {
+        if (navMenu && navToggle && !window.matchMedia('(max-width: 768px)').matches) {
+            navMenu.classList.remove('nav-open');
+            navToggle.setAttribute('aria-expanded', 'false');
+        }
+
         syncTreatmentHeights();
         syncAboutAndAppointmentHeights();
     });
