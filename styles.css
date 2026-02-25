@@ -83,6 +83,25 @@ body {
     align-items: center;
 }
 
+.nav-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    width: 42px;
+    height: 42px;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    margin: 5px 0;
+    border-radius: 2px;
+}
+
 .nav-menu a {
     color: white;
     text-decoration: none;
@@ -712,6 +731,18 @@ body {
 .contact-details p {
     font-size: 14px;
     line-height: 1.8;
+}
+
+.contact-subheading {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.92);
+    margin-bottom: 4px;
+}
+
+.operating-hospitals p + p {
+    margin-top: 8px;
 }
 
 /* ============================================
