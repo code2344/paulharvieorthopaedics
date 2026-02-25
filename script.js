@@ -185,10 +185,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Logo image click scrolls to top
-    const logoImage = document.querySelector('.logo-img');
-    if (logoImage) {
-        logoImage.addEventListener('click', function() {
+    // Logo click scrolls to top
+    const logoClickableElements = document.querySelectorAll('.logo-img, .logo-text');
+    logoClickableElements.forEach(element => {
+        element.addEventListener('click', function() {
             const homeSection = document.querySelector('#home');
             if (homeSection) {
                 homeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         });
-    }
+    });
     
     // CTA Button scrolling
     const ctaButtons = document.querySelectorAll('.cta-button');
