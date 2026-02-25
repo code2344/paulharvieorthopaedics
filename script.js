@@ -41,6 +41,56 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
+    const syncAboutAndAppointmentHeights = () => {
+        const shouldStack = window.matchMedia('(max-width: 1024px)').matches;
+
+        // Sync about section
+        const aboutImage = document.querySelector('.about-grid .about-image');
+        const aboutContent = document.querySelector('.about-grid .about-content');
+
+        if (aboutImage && aboutContent) {
+            aboutImage.style.height = 'auto';
+            if (!shouldStack) {
+                const contentHeight = aboutContent.scrollHeight;
+                aboutImage.style.height = `${contentHeight1}px`;
+            }
+        }
+
+        // Sync appointment section
+        const appointmentImage = document.querySelector('.appointment-grid .appointment-image');
+        const appointmentContent = document.querySelector('.appointment-grid .appointment-content');
+
+        if (appointmentImage && appointmentContent) {
+            appointmentImage.style.height = 'auto';
+            if (!shouldStack) {
+                const contentHeight = appointmentContent.scrollHeight;
+                appointmentImage.style.height = `${contentHeight}px`;
+            }
+        }
+    };
+
+    const bindAboutAndAppointmentObservers = () => {
+        const aboutContent = document.querySelector('.about-grid .about-content');
+        const aboutImage = document.querySelector('.about-grid .about-image img');
+        const appointmentContent = document.querySelector('.appointment-grid .appointment-content');
+        const appointmentImage = document.querySelector('.appointment-grid .appointment-image img');
+
+        [aboutImage, appointmentImage].forEach(img => {
+            if (img && !img.complete) {
+                img.addEventListener('load', syncAboutAndAppointmentHeights);
+            }
+        });
+
+        [aboutContent, appointmentContent].forEach(content => {
+            if (content && 'ResizeObserver' in window) {
+                const observer = new ResizeObserver(() => {
+                    syncAboutAndAppointmentHeights();
+                });
+                observer.observe(content);
+            }
+        });
+    };
+
     const contactForm = document.querySelector('.contact-form');
     
     if (contactForm) {
@@ -71,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             try {
                 // Submit to Formspree
-                const response = await fetch('https://formspree.io/f/xvgezkqj', {
+                const response = await fetch('https://formspree.io/f/xeelvlgq', {
                     method: 'POST',
                     body: formData,
                     headers: {
@@ -137,8 +187,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
     syncTreatmentHeights();
     bindTreatmentObservers();
-    window.addEventListener('resize', syncTreatmentHeights);
-    window.addEventListener('load', syncTreatmentHeights);
+    syncAboutAndAppointmentHeights();
+    bindAboutAndAppointmentObservers();
+    
+    // Re-sync after fonts load and CSS applied with multiple checkpoints
+    setTimeout(() => {
+        syncAboutAndAppointmentHeights();
+    }, 200);
+    
+    setTimeout(() => {
+        syncAboutAndAppointmentHeights();
+    }, 500);
+    
+    setTimeout(() => {
+        syncTreatmentHeights();
+        syncAboutAndAppointmentHeights();
+    }, 1000);
+    
+    setTimeout(() => {
+        syncAboutAndAppointmentHeights();
+    }, 1500);
+    
+    window.addEventListener('resize', () => {
+        syncTreatmentHeights();
+        syncAboutAndAppointmentHeights();
+    });
+    window.addEventListener('load', () => {
+        syncTreatmentHeights();
+        syncAboutAndAppointmentHeights();
+    });
 });
 
 // Microsoft Clarity Analytics
