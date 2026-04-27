@@ -2,6 +2,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const navToggle = document.querySelector('.nav-toggle');
     const navMenu = document.querySelector('.nav-menu');
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    const dropdownItem = document.querySelector('.has-dropdown');
 
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', function() {
@@ -9,6 +11,25 @@ document.addEventListener('DOMContentLoaded', function() {
             navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         });
     }
+
+    if (dropdownToggle && dropdownItem) {
+        dropdownToggle.addEventListener('click', function() {
+            const isOpen = dropdownItem.classList.toggle('dropdown-open');
+            dropdownToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+    }
+
+    const closeNavigation = () => {
+        if (navMenu && navToggle) {
+            navMenu.classList.remove('nav-open');
+            navToggle.setAttribute('aria-expanded', 'false');
+        }
+
+        if (dropdownItem && dropdownToggle) {
+            dropdownItem.classList.remove('dropdown-open');
+            dropdownToggle.setAttribute('aria-expanded', 'false');
+        }
+    };
 
     const syncTreatmentHeights = () => {
         const treatmentCards = document.querySelectorAll('.treatment-card');
@@ -177,9 +198,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
 
-                if (navMenu && navToggle && window.matchMedia('(max-width: 768px)').matches) {
-                    navMenu.classList.remove('nav-open');
-                    navToggle.setAttribute('aria-expanded', 'false');
+                if (window.matchMedia('(max-width: 768px)').matches) {
+                    closeNavigation();
                 }
             }
         });
@@ -209,6 +229,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
+
+                if (window.matchMedia('(max-width: 768px)').matches) {
+                    closeNavigation();
+                }
             }
         });
     });
@@ -237,14 +261,31 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 1500);
     
     window.addEventListener('resize', () => {
-        if (navMenu && navToggle && !window.matchMedia('(max-width: 768px)').matches) {
-            navMenu.classList.remove('nav-open');
-            navToggle.setAttribute('aria-expanded', 'false');
+        if (!window.matchMedia('(max-width: 768px)').matches) {
+            closeNavigation();
         }
 
         syncTreatmentHeights();
         syncAboutAndAppointmentHeights();
     });
+
+    document.addEventListener('click', function(event) {
+        if (!navMenu || !navToggle) {
+            return;
+        }
+
+        const clickedInsideNav = navMenu.contains(event.target) || navToggle.contains(event.target);
+        if (!clickedInsideNav) {
+            closeNavigation();
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeNavigation();
+        }
+    });
+
     window.addEventListener('load', () => {
         syncTreatmentHeights();
         syncAboutAndAppointmentHeights();
